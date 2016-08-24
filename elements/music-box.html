@@ -1,0 +1,64 @@
+<dom-module id="music-box">
+    <script>
+    Polymer({
+        is: 'music-box',
+        properties: {
+            audioCtx: {
+                type: Object,
+                value: function() {
+                    return {};
+                }
+            },
+            sourse: {
+                type: Object,
+                value: function() {
+                    return {};
+                }
+            },
+            buffer: {
+                type: Object,
+                value: function() {
+                    return {};
+                }
+            },
+            data: {
+                type: Object,
+                value: function() {
+                    return {
+                        success: "https://www.freesound.org/data/previews/39/39213_35187-lq.mp3",
+                        brutalError: "https://www.freesound.org/data/previews/39/39156_35187-lq.mp3"
+                    };
+                }
+            },
+        },
+        attached: function() {
+            this.audioCtx = new(window.AudioContext || window.webkitAudioContext)();
+        },
+        success: function() {
+            this.play("success");
+        },
+        error: function() {
+            this.play("brutalError");
+        },
+        play: function(chosen) {
+            var request = new XMLHttpRequest();
+            request.open('GET', this.data[chosen], true);
+            request.responseType = 'arraybuffer';
+            var self = this;
+            request.onload = function() {
+                var audioData = request.response;
+                self.audioCtx.decodeAudioData(audioData, function(decodedArrayBuffer) {
+                        self.source = self.audioCtx.createBufferSource();
+                        self.source.buffer = decodedArrayBuffer;
+                        self.source.connect(self.audioCtx.destination);
+                        self.source.start(0);
+                    },
+                    function(e) {
+                        console.log("Error with decoding audio data" + e.err);
+                    });
+            };
+            request.send();
+        }
+    });
+    </script>
+</dom-module>

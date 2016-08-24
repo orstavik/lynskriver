@@ -12,8 +12,8 @@
         <lynskriver-timer id="timer" current-time={{currentTime}}></lynskriver-timer>
         <button id="play" on-tap="_play">Play</button>
         <button id="pause" on-tap="_pause">Pause</button>
-        <lynskriver-falling-alphabet current-time="[[currentTime]]"></lynskriver-falling-alphabet>
-        <lynskriver-keyboard></lynskriver-keyboard>
+        <lynskriver-falling-alphabet id="alphabet" current-time="[[currentTime]]" alphabet="{{alphabet}}"></lynskriver-falling-alphabet>
+        <lynskriver-keyboard alphabet="[[alphabet]]"></lynskriver-keyboard>
     </template>
     <script>
     Polymer({
@@ -24,12 +24,22 @@
             currentTime: {
                 type: Number
             },
+            alphabet: {
+                type: Array
+            }
+        },
+        listeners: {
+            "pressKey": "_keyPressed"
         },
         _play: function() {
             this.$.timer.start();
         },
         _pause: function() {
             this.$.timer.stop();
+        },
+        _keyPressed: function(e, detail) {
+            console.log(detail);
+            this.$.alphabet.keyPressed(detail);
         }
 
     });

@@ -1,9 +1,11 @@
 <link rel="import" href="lynskriver-falling-letter.html">
+<link rel="import" href="music-box.html">
 <dom-module id="lynskriver-falling-alphabet">
     <template>
         <template is="dom-repeat" items="{{letters}}">
             <lynskriver-falling-letter current-time="[[currentTime]]" letter="[[item]]"></lynskriver-falling-letter>
         </template>
+        <music-box id="musicBox"></music-box>
     </template>
     <script>
     Polymer({
@@ -21,8 +23,9 @@
             },
             alphabet: {
                 type: Array,
+                notify: true,
                 value: function() {
-                    return ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'];
+                    return ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
                 }
             }
         },
@@ -31,6 +34,16 @@
                 this.push("letters", this.alphabet[Math.floor(Math.random() * this.alphabet.length)]);
             }
         },
+        keyPressed: function(detail) {
+            var index = this.letters.indexOf(detail.key.toUpperCase());
+            if (index < 0) {
+                console.log("typo!" + detail.key);
+                this.$.musicBox.error();
+            } else {
+                this.splice("letters", index, 1);
+                this.$.musicBox.success();
+            }
+        }
 
     });
     </script>

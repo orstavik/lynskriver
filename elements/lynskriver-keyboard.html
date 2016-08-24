@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/iron-a11y-keys/iron-a11y-keys.html">
 <dom-module id="lynskriver-keyboard">
     <template>
-        <iron-a11y-keys id="a11y" target="[[target]]" keys="e" on-keys-pressed="debug"></iron-a11y-keys>
+        <iron-a11y-keys id="a11y" target="[[target]]" keys="[[alphabetString]]" on-keys-pressed="getTheKey"></iron-a11y-keys>
     </template>
     <script>
     Polymer({
@@ -12,10 +12,25 @@
                 value: function() {
                     return window;
                 }
+            },
+            alphabet: {
+                type: Array,
+                observer: "arrayToString"
+            },
+            alphabetString: {
+                type: String
             }
         },
-        debug: function(e) {
-            console.log(e);
+        ready: function() {
+            this.arrayToString();
+        },
+        getTheKey: function(e) {
+            this.fire("pressKey", e.detail);
+        },
+        arrayToString: function() {
+            if (!this.alphabet)
+                return;
+            this.set("alphabetString", this.alphabet.join(" ").toLowerCase());
         }
 
     });
