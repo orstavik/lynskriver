@@ -1,0 +1,7 @@
+{
+  "name": "lynskriver",
+  "short_name": "lynskriver",
+  "description": "Learn to type",
+  "start_url": "/",
+  "display": "standalone"
+}

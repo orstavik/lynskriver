@@ -1,0 +1,37 @@
+<link rel="import" href="lynskriver-falling-letter.html">
+<dom-module id="lynskriver-falling-alphabet">
+    <template>
+        <template is="dom-repeat" items="{{letters}}">
+            <lynskriver-falling-letter current-time="[[currentTime]]" letter="[[item]]"></lynskriver-falling-letter>
+        </template>
+    </template>
+    <script>
+    Polymer({
+        is: 'lynskriver-falling-alphabet',
+        properties: {
+            currentTime: {
+                type: Number,
+                observer: "_createLetter"
+            },
+            letters: {
+                type: Array,
+                value: function() {
+                    return [];
+                }
+            },
+            alphabet: {
+                type: Array,
+                value: function() {
+                    return ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'];
+                }
+            }
+        },
+        _createLetter: function() {
+            if (this.currentTime % 60 === 0) {
+                this.push("letters", this.alphabet[Math.floor(Math.random() * this.alphabet.length)]);
+            }
+        },
+
+    });
+    </script>
+</dom-module>

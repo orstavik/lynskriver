@@ -1,0 +1,65 @@
+<dom-module id="lynskriver-falling-letter">
+    <style>
+    :host {
+        display: flex;
+        width: 30px;
+        height: 30px;
+        position: absolute;
+        top: -30px;
+        justify-content: center;
+        align-items: center;
+        background-color: #fff;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2) inset;
+        border-radius: 50%;
+    }
+    </style>
+    <template>
+        [[letter]]
+    </template>
+    <script>
+    Polymer({
+        is: 'lynskriver-falling-letter',
+        properties: {
+            letter: {
+                type: String,
+                value: "X"
+            },
+            startTime: {
+                type: Number,
+                reflectToAttribute: true,
+                value: 0
+            },
+            currentTime: {
+                type: Number,
+                reflectToAttribute: true,
+                observer: "falling"
+            },
+            isFalling: {
+                type: Boolean,
+                value: true,
+                reflectToAttribute: true,
+                observer: "_isFallingChange"
+            }
+        },
+        attached: function() {
+            this.style.left = Math.random() * (window.innerWidth - this.style.width) + "px";
+        },
+        _isFallingChange: function() {
+            if (this.isFalling)
+                this.style.backgroundColor = "white";
+            else
+                this.style.backgroundColor = "red";
+        },
+        falling: function() {
+            if (!this.startTime)
+                this.startTime = this.currentTime;
+            if (this.isFalling) {
+                this.style.transform = "translateY(" + 2 * (this.currentTime - this.startTime) + "px)";
+                var posX = this.getBoundingClientRect();
+                if ((posX.height + posX.top + 100) >= window.innerHeight)
+                    this.set("isFalling", false);
+            }
+        }
+    });
+    </script>
+</dom-module>

@@ -1,0 +1,46 @@
+<dom-module id="lynskriver-timer">
+    <script>
+    Polymer({
+        is: 'lynskriver-timer',
+        properties: {
+            fps: {
+                type: Number,
+                value: function() {
+                    return 1000 / 60;
+                }
+            },
+            currentTime: {
+                type: Number,
+                value: 0,
+                notify: true,
+                reflectToAttribute: true
+            },
+            play: {
+                type: Boolean,
+                observer: "_playPause"
+            }
+        },
+        _playPause: function() {
+            if (this.play)
+                this.start();
+            else
+                this.stop();
+        },
+        _ticking: null,
+        start: function() {
+            if (this._ticking) this.stop();
+            var self = this;
+            self.fire("frame", {
+                time: self.currentTime
+            });
+            self._ticking = setTimeout(function() {
+                self.start();
+            }, self.fps);
+            self.currentTime++;
+        },
+        stop: function() {
+            clearTimeout(this._ticking);
+        }
+    });
+    </script>
+</dom-module>

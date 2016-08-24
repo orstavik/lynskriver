@@ -1,0 +1,37 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="lynskriver-timer.html">
+<link rel="import" href="lynskriver-falling-alphabet.html">
+<link rel="import" href="lynskriver-keyboard.html">
+<dom-module id="lynskriver-app">
+    <template>
+        <style>
+        :host {
+            display: block;
+        }
+        </style>
+        <lynskriver-timer id="timer" current-time={{currentTime}}></lynskriver-timer>
+        <button id="play" on-tap="_play">Play</button>
+        <button id="pause" on-tap="_pause">Pause</button>
+        <lynskriver-falling-alphabet current-time="[[currentTime]]"></lynskriver-falling-alphabet>
+        <lynskriver-keyboard></lynskriver-keyboard>
+    </template>
+    <script>
+    Polymer({
+
+        is: 'lynskriver-app',
+
+        properties: {
+            currentTime: {
+                type: Number
+            },
+        },
+        _play: function() {
+            this.$.timer.start();
+        },
+        _pause: function() {
+            this.$.timer.stop();
+        }
+
+    });
+    </script>
+</dom-module>
