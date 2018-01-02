@@ -1,11 +1,13 @@
 <link rel="import" href="lynskriver-falling-letter.html">
 <link rel="import" href="music-box.html">
+<link rel="import" href="lynskriver-keymap.html">
 <dom-module id="lynskriver-falling-alphabet">
     <template>
         <template is="dom-repeat" items="{{letters}}">
             <lynskriver-falling-letter current-time="[[currentTime]]" letter="[[item]]"></lynskriver-falling-letter>
         </template>
         <music-box id="musicBox"></music-box>
+        <lynskriver-keymap id="keymap"></lynskriver-keymap>
     </template>
     <script>
     Polymer({
@@ -21,19 +23,30 @@
                     return [];
                 }
             },
+            lastLetter: {
+                type: Object,
+                value: function() {
+                    return {};
+                }
+            },
             alphabet: {
                 type: Array,
                 notify: true,
                 value: function() {
-                    return ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+                    return ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
                 }
             }
         },
         _createLetter: function() {
+            //debugger;
             if (this.currentTime % 60 === 0) {
-                this.push("letters", this.alphabet[Math.floor(Math.random() * this.alphabet.length)]);
+                var letter = this.alphabet[Math.floor(Math.random() * this.alphabet.length)];
+                this.push("letters", letter.toUpperCase());
+                this.lastLetter = this.querySelectorAll("lynskriver-falling-letter")[this.querySelectorAll("lynskriver-falling-letter").length - 1];
+                // this.lastLetter.style.backgroundColor = this.$.keymap.$.englishQuerty.getColor(letter);
             }
         },
+
         keyPressed: function(detail) {
             var index = this.letters.indexOf(detail.key.toUpperCase());
             if (index < 0) {

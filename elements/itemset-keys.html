@@ -1,0 +1,65 @@
+<dom-module id="itemset-keys">
+    <script>
+    Polymer({
+        is: 'itemset-keys',
+        properties: {
+            _map: {
+                type: Object,
+                value: function() {
+                    return Object.create(null);
+                }
+            }
+        },
+        ready: function() {
+            this._map = this._createItemMap();
+        },
+        _createItemMap: function() {
+            // Objects chained to Object.prototype (`{}`) have members. Specifically,
+            // on FF there is a `watch` method that confuses the key map, so we
+            // need to use a null-based object here.
+            var keys = Object.create(null);
+            Polymer.dom(this).querySelectorAll('[data-letter]')
+                .forEach(function(key) {
+                    keys[key.dataset.letter] = key.dataset;
+                });
+            return keys;
+        },
+        getLetter: function(letter) {
+            return this._map[letter];
+        },
+        getRow: function(letter) {
+            return this._map[letter].row;
+        },
+        getFinger: function(letter) {
+            return this._map[letter].finger;
+        },
+        getHand: function(letter) {
+            return this._map[letter].hand;
+        },
+        getMove: function(letter) {
+            return this._map[letter].move;
+        },
+        getColor: function(letter) {
+            var fhm = this._map[letter];
+            var strFHM = parseInt("" + fhm.hand + fhm.finger + fhm.move);
+            var colorMap = {
+                140: "beige",
+                141: "brown",
+                130: "yellow",
+                120: "orange",
+                110: "red",
+                111: "pink",
+                240: "lilac",
+                241: "purple",
+                230: "blue",
+                220: "teal",
+                210: "green",
+                211: "lime"
+            };
+            console.log(colorMap[strFHM]);
+            return colorMap[strFHM];
+        },
+        getTone: function(letter) {}
+    });
+    </script>
+</dom-module>

@@ -22,16 +22,14 @@
         properties: {
             letter: {
                 type: String,
-                value: "X"
+                reflectToAttribute: true
             },
             startTime: {
                 type: Number,
-                reflectToAttribute: true,
                 value: 0
             },
             currentTime: {
                 type: Number,
-                reflectToAttribute: true,
                 observer: "falling"
             },
             isFalling: {
@@ -42,13 +40,11 @@
             }
         },
         attached: function() {
-            this.style.left = Math.random() * (window.innerWidth - this.style.width) + "px";
+            this.style.left = Math.random() * (window.innerWidth - 40) + "px";
         },
         _isFallingChange: function() {
-            if (this.isFalling)
-                this.style.backgroundColor = "white";
-            else
-                this.style.backgroundColor = "red";
+            if (!this.isFalling)
+                this.style.backgroundColor = "black";
         },
         falling: function() {
             if (!this.startTime)
@@ -56,7 +52,7 @@
             if (this.isFalling) {
                 this.style.transform = "translateY(" + 2 * (this.currentTime - this.startTime) + "px)";
                 var posX = this.getBoundingClientRect();
-                if ((posX.height + posX.top + 100) >= window.innerHeight)
+                if ((posX.height + posX.top + 1) >= window.innerHeight)
                     this.set("isFalling", false);
             }
         }
